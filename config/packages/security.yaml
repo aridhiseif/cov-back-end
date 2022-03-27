@@ -26,12 +26,21 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        
+        users:
+            pattern: ^/api/users
+            methods: [PUT,PATCH,DELETE]
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
         api:
             pattern:   ^/api
             stateless: true
             jwt: ~
-            
+        
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -50,7 +59,7 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api/users, roles: ROLE_USER,methods: [PUT,PATCH,DELETE]}
 
 when@test:
     security:

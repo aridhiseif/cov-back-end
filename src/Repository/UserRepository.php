@@ -30,6 +30,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function add(User $entity, bool $flush = true): void
     {
+
         $this->_em->persist($entity);
         if ($flush) {
             $this->_em->flush();
