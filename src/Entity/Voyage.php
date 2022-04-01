@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\VoyageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=VoyageRepository::class)
+ * @ApiResource
  */
 class Voyage
 {
@@ -21,6 +23,11 @@ class Voyage
      * @ORM\Column(type="datetime")
      */
     private $date;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="voyages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $conducteur;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -32,10 +39,8 @@ class Voyage
      */
     private $destination;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $conducteur;
+
+
 
     public function getId(): ?int
     {
@@ -78,12 +83,20 @@ class Voyage
         return $this;
     }
 
-    public function getConducteur(): ?string
+    /**
+     * @return User
+     */
+
+    public function getConducteur(): User
     {
         return $this->conducteur;
     }
 
-    public function setConducteur(string $conducteur): self
+    /**
+     * @param User $conducteur
+     * @return $this
+     */
+    public function setConducteur(User $conducteur): self
     {
         $this->conducteur = $conducteur;
 
